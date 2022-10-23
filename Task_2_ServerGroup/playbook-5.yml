@@ -1,0 +1,12 @@
+---
+- hosts: all
+  tasks:
+    - name: Create a directory
+      file:
+         path: /tmp/learn_ansible
+         state: directory
+
+    - name: Create files with diffeerent content for each server
+      ansible.builtin.template:
+        src: /home/user_name/learn_ansible/4/note.txt
+        dest: /tmp/learn_ansible/note.txt
