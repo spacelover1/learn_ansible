@@ -1,0 +1,81 @@
+---
+- hosts: all
+  tags: [note]
+  tasks:
+
+    - name: Create a directory
+      file:
+         path: /tmp/learn_ansible
+         state: directory
+
+    - name: Create files with different content for each server
+      ansible.builtin.template:
+        src: /home/user_name/learn_ansible/5_firewall/note.txt
+        dest: /tmp/learn_ansible/note.txt
+      
+- hosts: all
+  tags: [ufw-ssh]
+  tasks:      
+    - name: Allow firewall & SSH
+      become: true
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        rule: allow
+        name: OpenSSH
+  
+    
+
+- hosts: web
+  tags: [firewall-web]
+  tasks:
+    - name: Modifying firewalls http
+      become: true 
+      community.general.ufw:
+        rule: allow
+        port: "{{ http_port }}" 
+
+    - name: Modifying firewalls https
+      become: true
+      community.general.ufw:
+        rule: allow
+        port: "{{ https_port }}" 
+
+- hosts: db
+  tags: [firewall-db]
+  tasks:
+    - name: Modifying firewalls db
+      become: true
+      community.general.ufw:
+        rule: allow
+        port: "{{ db_port }}"
+
+  
+- hosts: web
+  become: true
+  tags: [nginx]
+  tasks:
+    - name: install nginx latest
+      become: true
+      apt:
+        update_cache: yes
+        name: nginx
+        state: latest
+    - name: start nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Setup nginx conf
+      template:
+        src: nginx.conf.tpl
+        dest: /etc/nginx/conf.d/{{ansible_hostname}}.conf
+      notify: restart nginx
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+        become: true
+        become_method: sudo
