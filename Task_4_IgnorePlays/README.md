@@ -2,5 +2,5 @@
 <br>
 <br>
 
-** Hint: ** search for ignoring tasks. <br>
-** 2nd hint: ** checkout last task and compare it with the first two. <br>
+**Hint:** search for ignoring tasks. <br>
+**2nd hint:** checkout last task and compare it with the first two. <br>
