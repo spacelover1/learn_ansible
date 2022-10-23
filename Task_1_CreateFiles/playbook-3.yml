@@ -1,0 +1,15 @@
+--- 
+- hosts: all
+  tasks:
+    - name: create the location/directory
+      file:
+        path: /tmp/ansible-learning
+        state: directory
+
+ 
+    - name: Create a file in servers
+      file:
+        path: /tmp/ansible-learning/file1
+        state: touch
+
+

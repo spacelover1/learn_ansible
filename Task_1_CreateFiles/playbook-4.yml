@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Create three files in the servers
+      file:
+        path: "/tmp/ansible-learning/{{ item }}"
+        state: touch
+    #  loop: [file01, file02, file03]
+      with_items:
+       - file_1
+       - file_2
+       - file_3
+        
