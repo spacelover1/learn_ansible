@@ -1,0 +1,8 @@
+---
+- name: Modifying firewalls db
+  tags: [firewall-db]
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: "{{ db_port }}"
+    

@@ -1,0 +1,14 @@
+---
+- name: Modifying firewalls http
+  tags: [firewall-web]
+  become: true 
+  community.general.ufw:
+    rule: allow
+    port: "{{ http_port }}" 
+
+- name: Modifying firewalls https
+  become: true
+  community.general.ufw:
+    rule: allow
+    port: "{{ https_port }}" 
+    

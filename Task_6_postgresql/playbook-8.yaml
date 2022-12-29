@@ -1,0 +1,59 @@
+---
+- name: Install some programs
+  become: true
+  hosts: all
+  tasks:
+
+  - name: ufw
+    import_tasks: firewall.yaml
+
+  - name: ufw1
+    import_tasks: fw-web.yaml
+    when: ansible_hostname =="srv1-VirtualBox"
+
+  - name: ufw2
+    import_tasks: fw-db.yaml
+    when: ansible_hostname =="srv2-VirtualBox"
+
+
+- name: Nginx
+  become: true
+  hosts: web
+  tasks:
+  - name: install
+    import_tasks: nginx.yaml
+
+  handlers:
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
+      become: true
+      become_method: sudo
+
+- name: Postgres
+  become: true
+  hosts: db
+  tasks:
+  -  name: install
+     import_tasks: postgresql.yaml
+
+  handlers:
+  - name: restart postgresql
+    service: name=postgresql state=restarted
+  - name: reload postgresql
+    service: name=postgresql state=reloaded
+
+- name: Docker and Docker-Compose
+  become: true
+  hosts: all
+  tasks:
+  - name: install
+    include_tasks: docker.yaml
+
+    with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+

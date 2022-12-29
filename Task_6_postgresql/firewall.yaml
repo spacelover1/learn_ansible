@@ -1,0 +1,9 @@
+---
+- name: Allow firewall & SSH
+  tags: [ufw-ssh]
+  become: true
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    rule: allow
+    name: OpenSSH
