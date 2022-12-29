@@ -1,7 +1,7 @@
 web:
   hosts:
     serv1:
-      ansible_host: 192.168.56.102
+      ansible_host: server1_ip_address
       ansible_user: srv1
 
   vars:
