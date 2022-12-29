@@ -1,0 +1,45 @@
+---
+# tasks file for roles/grafana
+- name: install gpg
+  apt:
+    name: gnupg,software-properties-common
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: copy gpg key
+  # environment:
+  #   http_proxy: zeinabsalimi:kxJK1ek5@zagroxy.insiders.sotoon.ir:3832
+  copy:
+    src: gpg.key
+    dest: /usr/share/keyrings/grafana.key
+    
+- name: add repository
+  shell: echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | tee -a /etc/apt/sources.list.d/grafana.list
+    
+- name: install grafana
+  apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+    
+- name: start service grafana-server
+  systemd:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: wait for service up
+  uri:
+    url: "http://127.0.0.1:3000"
+    status_code: 200
+  register: __result
+  until: __result.status == 200
+  retries: 120
+  delay: 1
+
+- name: change admin password for grafana gui
+  shell : "grafana-cli admin reset-admin-password {{ grafana_admin_password }}"
+  register: __command_admin
+  changed_when: __command_admin.rc !=0

@@ -1,0 +1,7 @@
+ansible_host: dbserver_ip_address
+ansible_user: server_username
+role: dbserver
+db_port: 5432
+grafana_server: monitorserver_ip_address
+
+    

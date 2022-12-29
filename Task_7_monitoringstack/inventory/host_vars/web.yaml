@@ -1,0 +1,9 @@
+
+ansible_host: webserver_ip_address
+ansible_user: server_username
+
+role: webserver
+http_port: 80
+https_port: 443
+server_name: webserver.local
+

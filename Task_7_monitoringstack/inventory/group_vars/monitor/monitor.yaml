@@ -1,0 +1,12 @@
+
+ansible_host: monitorserver_ip_address
+ansible_user: server_username
+
+role: monitor
+http_port: 80
+https_port: 443
+server_name: monitor.local
+groupId: alertmanager
+userId: alertmanager
+version: 0.24.0
+alertmanagerIP: monitorserver_ip_address

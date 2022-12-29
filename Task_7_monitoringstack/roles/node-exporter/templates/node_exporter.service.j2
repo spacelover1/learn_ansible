@@ -1,0 +1,23 @@
+# [Unit]
+# Description=Node Exporter Version {{ node_exporter_version }}
+# After=network-online.target[Service]
+# User={{ node_exporter_user }}
+# Group={{ node_exporter_user }}
+# Type=simple
+# ExecStart={{ node_exporter_bin }}[Install]
+# WantedBy=multi-user.target
+[Unit]
+Description=Node Exporter Version {{ node_exporter_version }}
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ node_exporter_user }}
+Group={{ node_exporter_user }}
+Type=simple
+ExecStart={{ node_exporter_bin }}[Install] --collector.systemd --collector.processes
+SyslogIdentifier=node_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

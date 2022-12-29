@@ -1,0 +1,5 @@
+
+http_port: 80
+https_port: 443
+db_port: 5432
+server_name: monitor.local
